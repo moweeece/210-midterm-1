@@ -53,17 +53,21 @@ public:
             return;   // exit the function
         }
 
-        newNode->next = temp->next;
-        newNode->prev = temp;
-        if (temp->next)
-            temp->next->prev = newNode;
+        // temp has stopped and we are inserting a node after temp so we need to do some "rewiring" / "replumbing" 
+        newNode->next = temp->next;   // set the newNodes next pointer to the temp next node position
+                                      // i.e. to the node that is going to be ahead of newNode
+        newNode->prev = temp;         // set the newNodes prev pointer to where temp is pointing
+                                      // i.e. to the node that is going to be behind newNode
+        
+        if (temp->next)   // if there is a node after where temp is pointing, meaning there is more nodes ahead..
+            temp->next->prev = newNode;  // then set the "after" temp node's previous pointer to the newNode
         else
-            tail = newNode;
-        temp->next = newNode;
+            tail = newNode;   // if temp was the last node then move tail to the newNode as that is the new tail
+        temp->next = newNode;   // temp next pointer gets updated to point to newNode
     }
 
     void delete_val(int value) {
-        if (!head) return;
+        if (!head) return;   // if the list is empty or head is nullptr
 
         Node* temp = head;
         
