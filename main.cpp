@@ -126,57 +126,61 @@ public:
         Node* tempPrev = temp->prev;  
         tempPrev->next = temp->next;   // links the tempPrev node to the next node ahead of temp
         temp->next->prev = tempPrev;   // links the next node back to tempPrev
-        delete temp;
+        delete temp;                   // delete the temporary ndoe to free dynamic memory and avoid memory leak     
     }
 
+    // function to add a value to the end of the list
     void push_back(int v) {
-        Node* newNode = new Node(v);
-        if (!tail)
-            head = tail = newNode;
+        Node* newNode = new Node(v);    // create a new node with the value passed in
+        if (!tail)                  // if the list is empty
+            head = tail = newNode;  // head and tail point to newNode
         else {
-            tail->next = newNode;
-            newNode->prev = tail;
-            tail = newNode;
+            tail->next = newNode;   // otherwise set the end nodes next pointer to newNode, making newNode the end of the list
+            newNode->prev = tail;   // more rewiring but now we link the newNodes previous pointer back to the node before it where tail is
+            tail = newNode;         // move tail up to the newNode making newNode the new tail
         }
     }
-    
+
+    // function to add a value to the front of the list    
     void push_front(int v) {
-        Node* newNode = new Node(v);
-        if (!head)
-            head = tail = newNode;
+        Node* newNode = new Node(v);   // create a new node with the value passed in
+        if (!head)                     // if the list is empty
+            head = tail = newNode;    // head and tail point to newNode
         else {
-            newNode->next = head;
-            head->prev = newNode;
-            head = newNode;
+            newNode->next = head;    // otherwise set the newNodes next pointer to where head is pointing
+            head->prev = newNode;    // link the heads prev node to newNode, basically almost pushing head one above newNode
+            head = newNode;          // move head to the newNode making newNode the new head
         }
     }
     
+    // function to delete a value from the front
     void pop_front() {
-
-        if (!head) {
-            cout << "List is empty." << endl;
-            return;
+ 
+        if (!head) {                            // if the list is empty
+            cout << "List is empty." << endl;   // error message
+            return;                             // exit the function as there is nothing to delete
         }
 
-        Node * temp = head;
+        Node * temp = head;     // create a temporary pointer and point to where head is pointing
 
-        if (head->next) {
-            head = head->next;
-            head->prev = nullptr;
+        if (head->next) {     // if there is another node after the head node
+            head = head->next;   // move head to the next node, temp pointer stays as is
+            head->prev = nullptr;  // rewire head prev to nullptr
         }
         else
-            head = tail = nullptr;
-        delete temp;
+            head = tail = nullptr;  // if there was only one node, then set head and tail to nullptr
+        delete temp;  // delete the node where temp is
     }
 
+    // function to delete a value fron the end
     void pop_back() {
-        if (!tail) {
-            cout << "List is empty." << endl;
-            return;
+        if (!tail) {                            // if the list is empty
+            cout << "List is empty." << endl;   // error message
+            return;                             // exit the function as there is nothing to delete
         }
-        Node * temp = tail;
+        Node * temp = tail;   // create a temporary pointer and point to where tail is pointing
 
-        if (tail->prev) {
+        if (tail->prev) {     // if there is another node before the tail node
             tail = tail->prev;
             tail->next = nullptr;
         }
