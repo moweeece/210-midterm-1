@@ -6,45 +6,51 @@ using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
 
+// class declaration
 class DoublyLinkedList {
+// private member variables
 private:
     struct Node {
         int data;
-        Node* prev;
-        Node* next;
+        Node* prev;   // pointer for previous node in the list
+        Node* next;   // pointer for next node in the list
+        // constructor which initializes each variable inside the Node struct
         Node(int val, Node* p = nullptr, Node* n = nullptr) {
-            data = val; 
-            prev = p;
-            next = n;
+            data = val; // sets data equal to what val has stored
+            prev = p;   // sets the previous pointer
+            next = n;   // sets the next pointer
         }
     };
 
-    Node* head;
-    Node* tail;
+    Node* head;   // pointer for the first node of the list
+    Node* tail;   // pointer for the last node of the list
 
+// public member variables
 public:
+    // consturctor setting the head and tail nodes to nullptr. Avoids dangling pointers
     DoublyLinkedList() { head = nullptr; tail = nullptr; }
 
+    // method to insert a value after a specified position
     void insert_after(int value, int position) {
-        if (position < 0) {
-            cout << "Position must be >= 0." << endl;
-            return;
+        if (position < 0) {   // input validation statement
+            cout << "Position must be >= 0." << endl;  // error output
+            return;   // exit the function
         }
 
-        Node* newNode = new Node(value);
-        if (!head) {
-            head = tail = newNode;
-            return;
+        Node* newNode = new Node(value);  // create a new node and stores the value in the node
+        if (!head) {   // if the list is empty or head is nullptr
+            head = tail = newNode;   // both head and tail point to the new node
+            return;   // exit the function
         }
 
-        Node* temp = head;
-        for (int i = 0; i < position && temp; ++i)
-            temp = temp->next;
+        Node* temp = head;   // creates a temporary node and sets it to point to head
+        for (int i = 0; i < position && temp; ++i)   // for loop to traverse the list
+            temp = temp->next;  // move temp pointer to next node
 
-        if (!temp) {
-            cout << "Position exceeds list size. Node not inserted.\n";
-            delete newNode;
-            return;
+        if (!temp) {  // if temp is nullptr meaning it reaches one past the end of the list
+            cout << "Position exceeds list size. Node not inserted.\n";  // output statement
+            delete newNode;  // delete the ndoe to free dynamic memory and avoid memory leak
+            return;   // exit the function
         }
 
         newNode->next = temp->next;
