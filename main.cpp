@@ -66,63 +66,66 @@ public:
         temp->next = newNode;   // temp next pointer gets updated to point to newNode
     }
 
+    // delete a node by value
     void delete_val(int value) {
         if (!head) return;   // if the list is empty or head is nullptr
 
-        Node* temp = head;
+        Node* temp = head;   // creates a temporary node and sets it to point to head
         
-        while (temp && temp->data != value)
-            temp = temp->next;
+        while (temp && temp->data != value)  // traverses the list one at a time until the node containing the value is found
+            temp = temp->next;  // move temp up to the next node
 
-        if (!temp) return; 
+        if (!temp) return;   // if temp is nullptr meaning it reaches one past the end of the list exit the function
 
-        if (temp->prev)
-            temp->prev->next = temp->next;
+        if (temp->prev)      // if there is something in temp->prev meaning temp is not at the head
+            temp->prev->next = temp->next;   // update temp->next to the node in front of where temp is
         else
-            head = temp->next; 
+            head = temp->next;   // otherwise update the head pointer if temp is the first node
 
-        if (temp->next)
-            temp->next->prev = temp->prev;
+        if (temp->next)      // if there is something in temp->next meaning temp is not at the end
+            temp->next->prev = temp->prev;  // update temp->prev to the node behind where temp is
         else
-            tail = temp->prev; 
+            tail = temp->prev;   // otherwise update the tail pointer if temp is at the end
 
-        delete temp;
+        delete temp;   // delete the temporary ndoe to free dynamic memory and avoid memory leak
     }
 
-    void delete_pos(int pos) {
-        if (!head) {
-            cout << "List is empty." << endl;
-            return;
+    // delete a node by position
+    void delete_pos(int pos) {   // position as an argument
+        if (!head) {  // if the list is empty or head is nullptr
+            cout << "List is empty." << endl;   // error output
+            return;   // exit the function
         }
     
-        if (pos == 1) {
-            pop_front();
-            return;
+        if (pos == 1) {   // if position is equal to 1
+            pop_front();  // call to pop_front() function which will delete the front node
+            return;  // exit the function
         }
     
-        Node* temp = head;
+        Node* temp = head;   // creates a temporary node and sets it to point to head
     
-        for (int i = 1; i < pos; i++){
-            if (!temp) {
-                cout << "Position doesn't exist." << endl;
-                return;
+        for (int i = 1; i < pos; i++){   // for loop to traverse the list
+            if (!temp) {    // if head is nullptr then the position doesnt exist
+                cout << "Position doesn't exist." << endl;  // error message
+                return;    // exit the function
             }
             else
-                temp = temp->next;
-        }
-        if (!temp) {
-            cout << "Position doesn't exist." << endl;
-            return;
-        }
-    
-        if (!temp->next) {
-            pop_back();
-            return;
+                temp = temp->next;  // otherwise move to the next node
+        } // end of for loop
+        if (!temp) {  // if head is nullptr then the position doesnt exist
+            cout << "Position doesn't exist." << endl;  // error message
+            return;  // exit the function
         }
     
-        Node* tempPrev = temp->prev;
-        tempPrev->next = temp->next;
-        temp->next->prev = tempPrev;
+        if (!temp->next) {  // if temp->next is pointing to nullptr meaning temp is at the last node 
+            pop_back();  // call to pop_back() function which will delete the back node
+            return;  // exit the function
+        }
+    
+        // creates a tempPrev node and sets it to where the original temp's prev node is pointing to
+        Node* tempPrev = temp->prev;  
+        tempPrev->next = temp->next;   // links the tempPrev node to the next node ahead of temp
+        temp->next->prev = tempPrev;   // links the next node back to tempPrev
         delete temp;
     }
 
