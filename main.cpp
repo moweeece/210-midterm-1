@@ -180,48 +180,69 @@ public:
         }
         Node * temp = tail;   // create a temporary pointer and point to where tail is pointing
 
-        if (tail->prev) {     // if there is another node before the tail node
-            tail = tail->prev;
-            tail->next = nullptr;
+        if (tail->prev) {       // if there is another node before the tail node
+            tail = tail->prev;   // move tail to the previous node
+            tail->next = nullptr;  // set tail next to nullptr to avoid dangling pointers
         }
         else
-            head = tail = nullptr;
-        delete temp;
+            head = tail = nullptr;   // if there was only one node, then set head and tail to nullptr
+        delete temp;   // delete the node where temp is
     }
 
+    // Destructor to delete the double linked list
     ~DoublyLinkedList() {
-        while (head) {
-            Node* temp = head;
-            head = head->next;
-            delete temp;
-        }
-    }
-    void print() {
-        Node* current = head;
-        if (!current) {
-            cout << "List is empty." << endl;
-            return;
-        }
-        while (current) {
-            cout << current->data << " ";
-            current = current->next;
-        }
-        cout << endl;
+        while (head) {     // while head is pointing to something, meaning the list is NOT empty
+            Node* temp = head;   // creates a temporary pointer pointing to where head is pointing
+            head = head->next;   // move head up to next node, temp stays as is
+            delete temp;         // delete node that temp is pointing to
+        }  // repeat until ist is empty
     }
 
+    // prints the list
+    void print() {
+        Node* current = head;   // creates a current node and points to where head is pointing, the start of the list
+        if (!current) {    // if the list is empty
+            cout << "List is empty." << endl; // error message
+            return;   // exit the function as there is nothing to print
+        }
+        while (current) {   // while current is pointing to something
+            cout << current->data << " ";   // print the data inside the node current is pointing to with a space
+            current = current->next;   // move current to the next node
+        } // printing complete
+        cout << endl;   // new line
+    }
+
+    // print the list in reverse
     void print_reverse() {
-        Node* current = tail;
-        if (!current) { 
-            cout << "List is empty." << endl;
-            return;
+        Node* current = tail;  // creates a current node and points to where tail is pointing, the end of the list
+        if (!current) { // if the list is empty
+            cout << "List is empty." << endl;// error message
+            return; // exit the function as there is nothing to print
         }
-        while (current) {
-            cout << current->data << " ";
-            current = current->prev;
+        while (current) {   // while current is pointing to something
+            cout << current->data << " "; // print the data inside the node current is pointing to with a space
+            current = current->prev;  // move current to the previous node
+        } // printing complete
+        cout << endl; // new line
+    }
+
+    // method to print every other node starting with first node
+    void every_other_element() {
+        Node* temp = head;     // create a temp node and points to where head is pointing to, the front of the list
+        
+        while (temp) {       // while temp is pointing to something, meaning not nullptr, meaning not pst the end of the list
+            cout << temp->data << " ";  // output the data in the pointer
+            if (temp->next) {   // if there is another node ahead of where temp is
+                temp = temp->next->next;  // skip the next node and continue to the next one after that
+            }
+            else
+                break;   // otherwise stop
         }
-        cout << endl;
+
+        cout << endl;  // new line
     }
 };
+
 
 int main() {
     cout << MIN_NR + MIN_LS + MAX_NR + MAX_LS;  // dummy statement to avoid compiler warning
